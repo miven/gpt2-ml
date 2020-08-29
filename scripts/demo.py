@@ -3,7 +3,8 @@ import os
 import argparse
 import json
 import re
-sys.path.append("D:\\code\\ai\\gpt2-ml\\")
+#sys.path.append("D:\\code\\ai\\gpt2-ml\\")
+#本地运行需要设定目录
 import tensorflow.compat.v1 as tf
 import numpy as np
 from train.modeling import GroverModel, GroverConfig, sample
