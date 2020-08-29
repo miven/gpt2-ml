@@ -3,10 +3,9 @@ import os
 import argparse
 import json
 import re
-
+sys.path.append("D:\\code\\ai\\gpt2-ml\\")
 import tensorflow.compat.v1 as tf
 import numpy as np
-
 from train.modeling import GroverModel, GroverConfig, sample
 from tokenization import tokenization
 
@@ -158,6 +157,7 @@ top_p = np.ones((num_chunks, batch_size_per_chunk), dtype=np.float32) * args.top
 
 tf_config = tf.ConfigProto(allow_soft_placement=True)
 
+
 with tf.Session(config=tf_config, graph=tf.Graph()) as sess:
     initial_context = tf.placeholder(tf.int32, [batch_size_per_chunk, None])
     p_for_topp = tf.placeholder(tf.float32, [batch_size_per_chunk])
@@ -169,7 +169,7 @@ with tf.Session(config=tf_config, graph=tf.Graph()) as sess:
 
     saver = tf.train.Saver()
     saver.restore(sess, args.ckpt_fn)
-    print('🍺Model loaded. \nInput something please:⬇️')
+    print('Model loaded. \nInput something please:️')
     text = input()
     while text != "":
         for i in range(args.samples):
@@ -195,7 +195,13 @@ with tf.Session(config=tf_config, graph=tf.Graph()) as sess:
                     extraction = extract_generated_target(output_tokens=t_i, tokenizer=tokenizer)
                     gens.append(extraction['extraction'])
 
-            l = re.findall('.{1,70}', gens[0].replace('[UNK]', '').replace('##', ''))
-            print("\n".join(l))
+            l = re.findall('.{1,70}', gens[0].replace('[UNK]', '').replace('[SEP]', '').replace('##', ''))
+            l = ''.join(l).replace('##', '').strip()
+            print(l)
+            with open('/content/drive/My Drive/txt/' + text + '.txt', 'a', encoding='utf8') as f:
+                f.write(l)
+                f.write('\n')
+                f.write('=' * 90)
+                f.write('\n' * 2)
         print('Next try:⬇️')
         text = input()
