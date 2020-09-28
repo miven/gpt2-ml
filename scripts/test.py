@@ -191,6 +191,7 @@ with tf.Session(config=tf_config, graph=tf.Graph()) as sess:
             for text in keyword:  # 在这里开始生成发布 fabu(siteid, title, content)
                 for i in range(args.samples):
                     print("Sample,", i + 1, " of ", args.samples)
+                    start = time.clock()
                     line = tokenization.convert_to_unicode(text)
                     bert_tokens = tokenizer.tokenize(line)
                     encoded = tokenizer.convert_tokens_to_ids(bert_tokens)
@@ -216,6 +217,8 @@ with tf.Session(config=tf_config, graph=tf.Graph()) as sess:
                     l = re.findall('.{1,70}', gens[0].replace('[UNK]', '').replace('[SEP]', '').replace('##', ''))
                     l = ''.join(l).replace('##', '').strip()
                     #print(l)
+                    end = time.clock()
+                    print("The Generate time is : %.03f seconds" % (end - start))
                     fabu(siteid, text, l)
                 #print('Next Job:⬇️')
             #print("延时3秒");
