@@ -218,8 +218,8 @@ with tf.Session(config=tf_config, graph=tf.Graph()) as sess:
                     l = ''.join(l).replace('##', '').strip()
                     #print(l)
                     end = time.clock()
-                    print("The Generate time is : %.03f seconds" % (end - start))
                     fabu(siteid, text, l)
+                    print("The Generate time is : %.03f seconds" % (end - start))
                 #print('Next Job:⬇️')
             #print("延时3秒");
             #time.sleep(3)  # 休眠3秒
